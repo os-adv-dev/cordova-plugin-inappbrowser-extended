@@ -1,0 +1,17 @@
+{
+  "name": "ExtendedSupportedInAppBrowserPlugin",
+  "version": "1.0.0",
+  "description": "This plugin is a wrapper of OutSystems Supported Cordova Plugin InAppBrowser to fix issue in Android WebView Google Sign In - to set the userAgent to not receive the erro disallowed_userAgent error 403",
+  "cordova": {
+    "id": "com.experts.outsystems.extended.inappbrowser.plugin",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Paulo Cesar - OutSystems",
+  "license": "MIT"
+}
