@@ -3,35 +3,33 @@ var fs = require('fs');
 var path = require('path');
 
 module.exports = function(context) {
-    var settingsLine = [
-        ' settings.setUserAgentString("Android " + android.os.Build.VERSION.SDK);'
-    ].join('\n');
-
+    var settingsLine = 'settings.setUserAgentString("Android " + android.os.Build.VERSION.SDK);';
+    var domStorageEnabledLine = 'settings.setDomStorageEnabled(true);';
+    
     var targetFile = 'InAppBrowser.java';
     var targetPath = path.join(context.opts.projectRoot, 'platforms', 'android', 'app', 'src', 'main', 'java', 'org', 'apache', 'cordova', 'inappbrowser', targetFile);
 
-    console.log('-- ✅ -- settingsLine: '+settingsLine);
-    console.log('-- ✅ -- targetPath: '+targetPath);
+    console.log('-- ✅ -- settingsLine: ' + settingsLine);
+    console.log('-- ✅ -- targetPath: ' + targetPath);
 
-    // Verificar se o arquivo existe
     if (fs.existsSync(targetPath)) {
-        // Ler o arquivo como um array de linhas
         var lines = fs.readFileSync(targetPath, 'utf8').split('\n');
+        var foundIndex = lines.findIndex(line => line.includes(domStorageEnabledLine));
 
-        // Verificar se a linha já existe para evitar duplicações
-        if (lines[1511].trim() !== settingsLine) {
-            // Inserir a settingsLine na linha 1512
-            lines.splice(1511, 0, settingsLine);
-            // Unir o array em uma string para salvar no arquivo
+        if (foundIndex !== -1 && lines[foundIndex + 1].trim() !== settingsLine) {
+            lines.splice(foundIndex + 1, 0, settingsLine);
             var updatedContents = lines.join('\n');
-            // Escrever o arquivo atualizado
             fs.writeFileSync(targetPath, updatedContents, 'utf8');
-            console.log('-- ✅ -- The line of code has been added to InAppBrowser.java at line 1512.');
+            console.log('-- ✅ -- The settingsLine has been added after settings.setDomStorageEnabled(true).');
 
-            // Imprimir o arquivo editado no console
-            console.log('-- ✅ -- Edited InAppBrowser.java:');
+            // For verification purposes, print out a portion of the file around the insertion point
+            var startPrintIndex = Math.max(foundIndex - 3, 0);
+            var endPrintIndex = Math.min(foundIndex + 4, lines.length);
+            console.log(lines.slice(startPrintIndex, endPrintIndex).join('\n'));
+        } else if (foundIndex === -1) {
+            console.log('-- ❌ -- The line settings.setDomStorageEnabled(true); was not found.');
         } else {
-            console.log('-- ❌ -- The line of code is already present at line 1512.');
+            console.log('-- ❌ -- The settingsLine is already present after settings.setDomStorageEnabled(true).');
         }
     } else {
         console.log(' -- ❌ -- InAppBrowser.java file not found.');

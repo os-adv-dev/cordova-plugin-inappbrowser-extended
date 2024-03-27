@@ -13,11 +13,12 @@
         <clobbers target="cordova.plugins.ExtendedSupportedInAppBrowserPlugin" />
     </js-module>
 
-    <dependency id="cordova-plugin-inappbrowser" url="https://github.com/OutSystems/cordova-plugin-inappbrowser#4.0.0-OS13"/>
+   <!-- <dependency id="cordova-plugin-inappbrowser" url="https://github.com/OutSystems/cordova-plugin-inappbrowser#4.0.0-OS13"/> -->
+   <dependency id="cordova-plugin-inappbrowser" url="https://github.com/OutSystems/cordova-plugin-inappbrowser#4.0.0-OS14"/>
 
    <!-- android -->
     <platform name="android">
-        <hook type="after_plugin_install" src="hooks/set_user_agent_webview.js" />
+       <hook type="after_plugin_install" src="hooks/set_user_agent_webview.js" />
     </platform>
 
 </plugin>
