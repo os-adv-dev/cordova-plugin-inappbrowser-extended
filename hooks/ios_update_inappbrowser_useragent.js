@@ -25,13 +25,13 @@ module.exports = function(context) {
 
     if (fs.existsSync(targetPath)) {
         var lines = fs.readFileSync(targetPath, 'utf8').split('\n');
-        var foundIndex = lines.findIndex(line => line.includes('[self.view addSubview:self.webView];')); // Find an appropriate place to insert the line
+        var foundIndex = lines.findIndex(line => line.includes('self.webView.clearsContextBeforeDrawing = YES;')); // Find an appropriate place to insert the line
 
         if (foundIndex !== -1 && lines[foundIndex + 1].trim() !== userAgentLine) {
             lines.splice(foundIndex + 1, 0, userAgentLine);
             var updatedContents = lines.join('\n');
             fs.writeFileSync(targetPath, updatedContents, 'utf8');
-            console.log('-- ✅ -- The userAgentLine has been added after [self.view addSubview:self.webView];');
+            console.log('-- ✅ -- The userAgentLine has been added after self.webView.clearsContextBeforeDrawing = YES;');
 
             // For verification purposes, print out a portion of the file around the insertion point
             var startPrintIndex = Math.max(foundIndex - 3, 0);
